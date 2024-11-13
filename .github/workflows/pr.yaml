@@ -4,12 +4,15 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
 
+permissions:
+  pull-requests: write
+
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
 
     env:
-      IMAGE_NAME: trevor-cicd-practice
+      IMAGE_NAME: trevorcarlson24/trevor-cicd-practice
 
     steps:
       - name: Checkout repository
@@ -37,16 +40,21 @@ jobs:
         run: |
           TAG_NAME="pr-${COMMIT_HASH}"
           docker push $IMAGE_NAME:$TAG_NAME
-
+      
+      - name: Install Docker Scout
+        run: |
+          curl -sSfL https://raw.githubusercontent.com/docker/scout-cli/main/install.sh | sh -s --
+          docker scout --help || echo "Docker Scout is installed."
+      
       - name: Run Docker Scout Quickview
         id: scout
         run: |
           TAG_NAME="pr-${COMMIT_HASH}"
-          docker scout quickview $IMAGE_NAME:$TAG_NAME > scout_report.txt
+          docker scout cves $IMAGE_NAME:$TAG_NAME > scout_report.txt
           cat scout_report.txt
 
       - name: Post Docker Scout output as PR comment
         uses: marocchino/sticky-pull-request-comment@v2
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
           path: scout_report.txt
+          recreate: true
