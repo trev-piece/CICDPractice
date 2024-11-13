@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      IMAGE_NAME: trevor-cicd-practice
+      IMAGE_NAME: trevorcarlson24/trevor-cicd-practice
 
     steps:
       - name: Checkout repository
