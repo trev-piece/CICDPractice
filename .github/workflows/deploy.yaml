@@ -1,0 +1,41 @@
+name: Deploy to K8s
+
+on:
+  pull_request:
+    types: ['closed']
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest    
+    steps:
+      
+      - name: Install python bump2version
+        shell: bash
+        run: pip install -U bump2version
+      
+      - name: Set BumpVersion Type
+        id: set-bumpversion-type
+        run: |
+          pat='\[bumpVersion: ((M|m)(ajor|inor)|(P|p)atch)\]'
+          s="${{ github.event.pull_request.title }}"
+          if [[ $s =~ $pat ]]; then
+            echo "::set-output name=bumpVersionType::${BASH_REMATCH[1]}";
+          else
+            echo "::set-output name=bumpVersionType::patch";
+          fi
+
+      - name: BumpVersion
+        id: bumpversion
+        run: |
+            bump2version ${{ steps.set-bumpversion-type.outputs.bumpVersionType }} --current-version $(cat VERSION | sed -e 's/.*://') --allow-dirty
+            echo "::set-output name=new_version::v$(cat VERSION | sed -e 's/.*://')"
+
+      - name: Commit version
+        uses: actions-js/push@master
+        with:
+          message: 'Update app to to ${{ steps.bumpversion.outputs.new_version }}'
+          force: true
