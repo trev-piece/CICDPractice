@@ -16,6 +16,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          persist-credentials: false
       
       - name: Get commit hash
         id: vars
@@ -55,3 +57,4 @@ jobs:
         with:
           message: 'Update app to to $NEW_VERSION'
           force: true
+          github_token: ${{ secrets.MY_PAT }}
