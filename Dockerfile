@@ -1,4 +1,4 @@
-FROM alpine:3.14
+FROM alpine:3.13
 
 ENV PYTHONUNBUFFERED=1
 
@@ -18,5 +18,3 @@ RUN pip3 install -r /app/requirements.txt
 WORKDIR /app
 
 EXPOSE 5000
-
-CMD ["python3"]
