@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: trevor-cicd-container
-        image: docker.io/trevorcarlson24/trevor-cicd-practice:1.0.0
+        image: docker.io/trevorcarlson24/trevor-cicd-practice:1.0.1
         ports:
         - containerPort: 5000
         command:
