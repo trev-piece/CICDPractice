@@ -10,9 +10,10 @@ permissions:
 jobs:
   deploy:
     if: github.event.pull_request.merged == true
-    runs-on: ubuntu-latest    
+    runs-on: ubuntu-latest
+    env:
+      IMAGE_NAME: trevorcarlson24/trevor-cicd-practice    
     steps:
-
       - name: Checkout repository
         uses: actions/checkout@v3
       
