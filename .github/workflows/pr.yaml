@@ -37,16 +37,22 @@ jobs:
         run: |
           TAG_NAME="pr-${COMMIT_HASH}"
           docker push $IMAGE_NAME:$TAG_NAME
+      
+      - name: Install Docker Scout
+        run: |
+          curl -fsSL https://get.docker.com -o get-docker.sh
+          sh get-docker.sh
+          docker scout --help || echo "Docker Scout is installed."
+      
+      - name: Run Docker Scout Quickview
+        id: scout
+        run: |
+          TAG_NAME="pr-${COMMIT_HASH}"
+          docker scout quickview $IMAGE_NAME:$TAG_NAME > scout_report.txt
+          cat scout_report.txt
 
-      # - name: Run Docker Scout Quickview
-      #   id: scout
-      #   run: |
-      #     TAG_NAME="pr-${COMMIT_HASH}"
-      #     docker scout quickview $IMAGE_NAME:$TAG_NAME > scout_report.txt
-      #     cat scout_report.txt
-
-      # - name: Post Docker Scout output as PR comment
-      #   uses: marocchino/sticky-pull-request-comment@v2
-      #   with:
-      #     token: ${{ secrets.GITHUB_TOKEN }}
-      #     path: scout_report.txt
+      - name: Post Docker Scout output as PR comment
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          path: scout_report.txt
