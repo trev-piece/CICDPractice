@@ -57,3 +57,4 @@ jobs:
         uses: marocchino/sticky-pull-request-comment@v2
         with:
           path: scout_report.txt
+          recreate: true
