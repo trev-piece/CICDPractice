@@ -20,10 +20,12 @@ jobs:
         id: vars
         run: echo "COMMIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV        
 
+      - name: Setup Git User
+        uses: fregante/setup-git-user@v1
+
       - name: Install python bump2version
         shell: bash
         run: pip install -U bump2version
-     
 
       - name: BumpVersion
         id: bumpversion
