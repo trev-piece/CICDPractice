@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trevor-cicd-practice-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: trevor-cicd-practice
+  template:
+    metadata:
+      labels:
+        app: trevor-cicd-practice
+    spec:
+      containers:
+      - name: trevor-cicd-container
+        image: docker.io/trevorcarlson24/trevor-cicd-practice:1.0.0
+        ports:
+        - containerPort: 5000
+        command:
+          - python3
+          - '-m'
+          - 'http.server'
+          - '5000'
+        resources:
+          limits:
+            cpu: 1
+            memory: 1Mi
+          requests:
+            cpu: 1
+            memory: 1Mi
