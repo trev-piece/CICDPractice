@@ -50,7 +50,7 @@ jobs:
         id: scout
         run: |
           TAG_NAME="pr-${COMMIT_HASH}"
-          docker scout quickview $IMAGE_NAME:$TAG_NAME > scout_report.txt
+          docker scout cves $IMAGE_NAME:$TAG_NAME > scout_report.txt
           cat scout_report.txt
 
       - name: Post Docker Scout output as PR comment
