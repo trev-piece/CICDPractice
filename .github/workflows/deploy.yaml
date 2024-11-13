@@ -36,6 +36,7 @@ jobs:
             cat VERSION
             bump2version --current-version $(cat VERSION | sed -e 's/.*://') patch --allow-dirty
             echo "NEW_VERSION=$(cat VERSION | sed -e 's/.*://')" >> $GITHUB_ENV
+            NEW_VERSION=$(cat VERSION | sed -e 's/.*://')
             echo $NEW_VERSION  
 
       - name: Log in to DockerHub
